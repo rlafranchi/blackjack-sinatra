@@ -1,0 +1,21 @@
+<h3><%= session[:player_name] %>'s Cards</h3>
+<div>
+  <% session[:players_cards].each do |card|%>
+    <img src="/images/cards/<%= card %>.jpg" alt="card" />
+  <% end %>
+</div>
+<h3>Dealer's Cards</h3>
+<div>
+  <% if session[:dealers_turn] %>
+    <% session[:dealers_cards].each do |card|%>
+      <img src="/images/cards/<%= card %>.jpg" alt="card" />
+    <% end %>
+  <% else %>
+    <img src="/images/cards/<%= session[:dealers_cards][0] %>.jpg" alt="card" />
+    <img src="/images/cards/cover.jpg" alt="card" />
+  <% end %>
+</div>
+<form method="post" action="/game">
+  <input type="submit" class="btn" name="hit" value="Hit"/>
+  <input type="submit" class="btn" name="stay" value="Stay"/>
+</form>
