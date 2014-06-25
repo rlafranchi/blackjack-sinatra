@@ -110,12 +110,14 @@ get '/game' do
 end
 
 post '/game' do
-  dealer_count = count_cards(session[:dealers_cards])
-  player_count = count_cards(session[:players_cards])
+  session[:dealer_count] = count_cards(session[:dealers_cards])
+  session[:player_count] = count_cards(session[:players_cards])
   hit = params[:hit]
   stay = params[:stay]
   if hit
     session[:players_cards] << session[:shuffled_deck][session[:deck_index]]
+    session[:player_count] = count_cards(session[:players_cards])
+    session[:deck_index] += 1
   elsif stay || session[:blackjack] || session[:players_cards] > 21
     session[:dealers_turn] = true
     @error = "Dealer's Turn"
