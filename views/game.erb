@@ -1,4 +1,5 @@
 <h3><%= session[:player_name] %>'s Cards</h3>
+<h4>Toal: <%= session[:player_count] %></h4>
 <div class="cards">
   <% session[:players_cards].each do |card|%>
     <img src="/images/cards/<%= card %>.jpg" alt="card" />
@@ -7,6 +8,7 @@
 <h3>Dealer's Cards</h3>
 <div class="cards">
   <% if session[:dealers_turn] %>
+    <h4>Toal: <%= session[:player_count] %></h4>
     <% session[:dealers_cards].each do |card|%>
       <img src="/images/cards/<%= card %>.jpg" alt="card" />
     <% end %>

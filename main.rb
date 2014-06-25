@@ -57,17 +57,25 @@ helpers do
 end
 
 get '/' do
+  @error = ( session[:error] ) ? session[:error] : nil
   erb :welcome
 end
 
 post '/' do
   session[:player_name] = params[:player_name]
   session[:chip_count] = params[:chip_count]
+  if is_a_number?(session[:chip_count])
+    redirect '/bet'
+  else
+    session[:error] = "Invalid. Please enter a number for the amount of chips."
+    redirect '/'
+  end
   redirect '/bet'
 end
 
 get '/bet' do
   session[:bet] = 0
+  @error = ( session[:error] ) ? session[:error] : nil
   erb :bet
 end
 
@@ -76,7 +84,7 @@ post '/bet' do
   if is_a_number?(session[:bet]) && session[:bet].to_f < session[:chip_count].to_f
     redirect '/game'
   else
-    @error = "Error"
+    session[:error] = "Invalid. Make another bet:"
     redirect '/bet'
   end
 end
@@ -110,6 +118,7 @@ post '/game' do
     session[:players_cards] << session[:shuffled_deck][session[:deck_index]]
   elsif stay || session[:blackjack] || session[:players_cards] > 21
     session[:dealers_turn] = true
+    @error = "Dealer's Turn"
   end
   erb:game
 end
