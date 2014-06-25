@@ -1,11 +1,11 @@
 <h3><%= session[:player_name] %>'s Cards</h3>
-<div>
+<div class="cards">
   <% session[:players_cards].each do |card|%>
     <img src="/images/cards/<%= card %>.jpg" alt="card" />
   <% end %>
 </div>
 <h3>Dealer's Cards</h3>
-<div>
+<div class="cards">
   <% if session[:dealers_turn] %>
     <% session[:dealers_cards].each do |card|%>
       <img src="/images/cards/<%= card %>.jpg" alt="card" />

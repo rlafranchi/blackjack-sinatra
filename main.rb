@@ -35,7 +35,7 @@ helpers do
     return d.keys.shuffle
   end
   
-  def card_count(cards)
+  def count_cards(cards)
     deck = create_deck
     v = 0
     cards.each do |k|
