@@ -167,12 +167,13 @@ end
 post '/game-over' do
   if params[:play_again]
     redirect '/bet'
+  elsif params[:donot_play_again]
+    session[:game_over] = true
+    erb :game
+ 
   elsif params[:buy_more]
     session[:chip_count] = params[:buy_more].to_f
     # binding.pry
     redirect '/bet'
-  elsif params[:donot_play_again]
-    session[:game_over] = true
-    erb :game
   end
 end
