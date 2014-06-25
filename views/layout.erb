@@ -20,6 +20,12 @@
   <div class="container">
     <%if @error %>
       <div class="alert alert-error"><%=@error%></div>
+    <%elsif @win %>
+      <div class="alert alert-success"><%=@win%></div>
+    <%elsif @lose %>
+      <div class="alert alert-error"><%=@lose%></div>
+    <%elsif @tie %>
+      <div class="alert alert-success"><%=@tie%></div>
     <% end %>
       <%= yield %>
   </div>

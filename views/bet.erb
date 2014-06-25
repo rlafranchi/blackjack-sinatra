@@ -1,8 +1,4 @@
 <form method="post" action="/bet">
-    <% if session[:bet].to_f > session[:chip_count].to_f %>
-      <div class="error alert-error">You don't have enough chips. Try another Bet.</div>
-    <% end %>
-    
   <label for="bet">You have <%= session[:chip_count] %> chips. Make Your bet:</label>
   <input id="bet" type="text" name="bet" />
   <br />
