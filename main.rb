@@ -86,7 +86,7 @@ post '/bet' do
     session[:error] = nil
     redirect '/game'
   else
-    session[:error] = "Invalid. Make another session[:bet]:"
+    session[:error] = "Invalid. Make another bet:"
     redirect '/bet'
   end
 end
