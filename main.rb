@@ -123,6 +123,7 @@ get '/game' do
     @tie = "It's a tie"
   elsif @blackjack
     @win = "You Win!"
+    session[:chip_count] += 1.5 * session[:bet]
   end
   erb :game
 end
@@ -155,13 +156,13 @@ post '/game' do
 
     if session[:dealer_count] > 21
       @win = "Dealer busts! You Win"
-      session[:chip_count] += ( session[:blackjack] ) ? 1.5 * session[:bet] : session[:bet]
+      session[:chip_count] += session[:bet]
     elsif session[:player_count] == session[:dealer_count]
       @tie = "It's a Tie!"
     # chip count doesn't change
     elsif session[:player_count] > session[:dealer_count]
       @win = "You Win!"
-      session[:chip_count] += ( session[:blackjack] ) ? 1.5 * session[:bet] : session[:bet]
+      session[:chip_count] += session[:bet]
     elsif session[:player_count] < session[:dealer_count]
       @lose = "You Lose! The House always wins! HaHaHa.."
       session[:chip_count] -= session[:bet]
