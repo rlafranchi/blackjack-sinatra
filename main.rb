@@ -107,7 +107,7 @@ get '/game' do
   session[:dealers_cards] << session[:shuffled_deck][3]
   session[:deck_index] = 4
   session[:player_count] = count_cards(session[:players_cards])
-  if count_cards(session[:players_cards]) == 21
+  if session[:player_count] == 21
     session[:blackjack] = true
     session[:dealers_turn] = true
     while session[:dealer_count] < 17
@@ -117,6 +117,12 @@ get '/game' do
     end
   else
     session[:blackjack] = false
+  end
+  @blackjack = session[:blackjack]
+  if @blackjack && session[:dealer_count] == 21
+    @tie = "It's a tie"
+  elsif @blackjack
+    @win = "You Win!"
   end
   erb :game
 end
@@ -133,6 +139,7 @@ post '/game' do
   end
   
   if session[:player_count] > 21
+    session[:dealer_count] = count_cards(session[:dealers_cards])
     @lose = "Bust! Dealer Shows cards."
     session[:chip_count] -= session[:bet]
     session[:dealers_turn] = true

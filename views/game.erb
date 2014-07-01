@@ -1,45 +1,57 @@
-<% if session[:game_over] %>
-  <h1>Thanks for Playing!</h1>
-<% else %>
-  <h3><%= session[:player_name] %>'s Cards</h3>
-  <h4>Total: <%= session[:player_count] %></h4>
-  <h5>Chip Count: <%= session[:chip_count] %></h5>
-  <h5>Current Bet: <%= session[:bet] %></h5>
-  <% if session[:dealers_turn] %>
-    <form action="/game-over" method="post">
-    <% if session[:chip_count] == 0 %>
-      <label for="buy_chips">You are out of chips.  Would you like to buy more?</label>
-      <input id="buy_chips" type="text" name="buy_more">
-      <input id="play_again" type="submit" class="btn" value="Buy More">
-      <input type="submit" class="btn" name="donot_play_again" value="No">
-    <% else %>
-      <label for="play_again">Would you like to play again?</label>
-      <input id="play_again" type="submit" class="btn" name="play_again" value="Yes">
-      <input type="submit" class="btn" name="donot_play_again" value="No">
-    <% end %>
-    </form>
-  <% else %>
-  <form method="post" action="/game">
-    <input type="submit" class="btn" name="hit" value="Hit"/>
-    <input type="submit" class="btn" name="stay" value="Stay"/>
-  </form>
+<div id="game">
+  <% if @blackjack %>
+    <div class="alert alert-success">BLACKJACK!!!</div>
   <% end %>
-  <div class="cards">
-    <% session[:players_cards].each do |card|%>
-      <img src="/images/cards/<%= card %>.jpg" alt="card" />
-    <% end %>
-  </div>
-  <h3>Dealer's Cards</h3>
-  <div class="cards">
+  <% if @win %>
+    <div class="alert alert-success"><%=@win%></div>
+  <% elsif @lose %>
+    <div class="alert alert-error"><%=@lose%></div>
+  <% elsif @tie %>
+    <div class="alert alert-info"><%=@tie%></div>
+  <% end %>
+  <% if session[:game_over] %>
+    <h1>Thanks for Playing!</h1>
+  <% else %>
+    <h3><%= session[:player_name] %>'s Cards</h3>
+    <h4>Total: <%= session[:player_count] %></h4>
+    <h5>Chip Count: <%= session[:chip_count] %></h5>
+    <h5>Current Bet: <%= session[:bet] %></h5>
     <% if session[:dealers_turn] %>
-      <h4>Total: <%= session[:dealer_count] %></h4>
-      <% session[:dealers_cards].each do |card| %>
+      <form action="/game-over" method="post">
+      <% if session[:chip_count] == 0 %>
+        <label for="buy_chips">You are out of chips.  Would you like to buy more?</label>
+        <input id="buy_chips" type="text" name="buy_more">
+        <input id="play_again" type="submit" class="btn" value="Buy More">
+        <input type="submit" class="btn" name="donot_play_again" value="No">
+      <% else %>
+        <label for="play_again">Would you like to play again?</label>
+        <input id="play_again" type="submit" class="btn" name="play_again" value="Yes">
+        <input type="submit" class="btn" name="donot_play_again" value="No">
+      <% end %>
+      </form>
+    <% else %>
+    <form method="post" action="/game">
+      <input id="hit" type="submit" class="btn" name="hit" value="Hit"/>
+      <input id="stay" type="submit" class="btn" name="stay" value="Stay"/>
+    </form>
+    <% end %>
+    <div class="cards">
+      <% session[:players_cards].each do |card|%>
         <img src="/images/cards/<%= card %>.jpg" alt="card" />
       <% end %>
-      </div>
-    <% else %>
-      <img src="/images/cards/<%= session[:dealers_cards][0] %>.jpg" alt="card" />
-      <img src="/images/cards/cover.jpg" alt="card" /> 
-      </div>
+    </div>
+    <h3>Dealer's Cards</h3>
+    <div class="cards">
+      <% if session[:dealers_turn] %>
+        <h4>Total: <%= session[:dealer_count] %></h4>
+        <% session[:dealers_cards].each do |card| %>
+          <img src="/images/cards/<%= card %>.jpg" alt="card" />
+        <% end %>
+        </div>
+      <% else %>
+        <img src="/images/cards/<%= session[:dealers_cards][0] %>.jpg" alt="card" />
+        <img src="/images/cards/cover.jpg" alt="card" /> 
+        </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>

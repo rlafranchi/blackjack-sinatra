@@ -1,7 +1,6 @@
 $(document).ready(function(){
   player_hit();
   player_stay();
-  dealer_hit();
 });
 
 function player_hit() {
@@ -11,7 +10,7 @@ function player_hit() {
       url: '/game',
       data: { hit: true, layout: false}
     }).done(function(msg){
-      $("div#game").replaceWith(msg);
+      $("#game").replaceWith(msg);
     });
     return false;
   });
@@ -24,7 +23,7 @@ function player_stay() {
       url: '/game',
       data: { stay: true, layout: false}
     }).done(function(msg){
-      $("div#game").replaceWith(msg);
+      $("#game").replaceWith(msg);
     });
     return false;
   });
