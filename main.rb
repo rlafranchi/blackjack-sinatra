@@ -161,7 +161,11 @@ post '/game' do
     end
   end
   
-  erb:game
+  unless params[:layout]
+    erb :game, layout: false
+  else
+    erb :game
+  end
 end
 
 post '/game-over' do
