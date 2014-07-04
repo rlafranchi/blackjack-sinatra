@@ -23,6 +23,9 @@
     <%if @error %>
       <div class="alert alert-error"><%=@error%></div>
     <% end %>
+    <%if @error_2 %>
+      <div class="alert alert-error"><%=@error_2%></div>
+    <% end %>
       <%= yield %>
   </div>
   </body>

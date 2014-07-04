@@ -6,9 +6,6 @@ require 'sinatra'
 set :sessions, true
 
 helpers do
-  def is_a_number?(s)
-    s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true 
-  end
   
   def create_deck
     suits = ['clubs', 'diamonds', 'hearts', 'spades']
@@ -63,38 +60,49 @@ get '/' do
 end
 
 post '/' do
+  if params[:player_name].empty?
+    @error = "Name is required"
+    halt erb(:welcome)
+  end
   session[:player_name] = params[:player_name]
-  session[:chip_count] = params[:chip_count].to_f
-  if is_a_number?(session[:chip_count])
-    session[:error] = nil
-    redirect '/bet'
+
+  if params[:chip_count].nil? || params[:chip_count].to_i == 0
+    @error_2 = "Must buy chips."
+    halt erb(:welcome)
+  elsif params[:chip_count].to_i < 0
+    @error_2 = "Please enter a positive number."
+    halt erb(:welcome)
   else
-    session[:error] = "Invalid. Please enter a number for the amount of chips."
-    redirect '/'
+    session[:chip_count] = params[:chip_count].to_f
+    redirect '/bet'
   end
 end
 
 get '/bet' do
-  session[:bet] = 0
-  @error = ( session[:error] ) ? session[:error] : nil
+  session[:bet] = nil
   erb :bet
 end
 
 post '/bet' do
-  session[:bet] = params[:bet].to_f
-  if is_a_number?(session[:bet]) && session[:bet] <= session[:chip_count]
-    session[:error] = nil
+  if params[:bet].nil? || params[:bet].to_i == 0
+    @error = "Must make a bet."
+    halt erb(:bet)
+  elsif params[:bet].to_i > session[:chip_count]
+    @error = "Bet amount cannot be greater than what you have ($#{session[:chip_count]})"
+    halt erb(:bet)
+  elsif params[:bet].to_i < 0
+    @error = "Please enter a positive number."
+    halt erb(:bet)
+  else #happy path
+    session[:bet] = params[:bet].to_f
+    session[:deck] = {}
+    session[:deck] = create_deck
+    session[:shuffled_deck] = shuffle_deck(session[:deck])
     redirect '/game'
-  else
-    session[:error] = "Invalid. Make another bet:"
-    redirect '/bet'
   end
 end
 
 get '/game' do
-  session[:deck] = {}
-  session[:deck] = create_deck
-  session[:shuffled_deck] = shuffle_deck(session[:deck])
   session[:players_cards] = []
   session[:dealers_cards] = []
   session[:player_count] = 0

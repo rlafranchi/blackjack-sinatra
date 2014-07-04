@@ -1,10 +1,7 @@
 <h1>Welcome to The Blackjack Tables</h1>
 <form method="post" action="/">
-  <% if session[:player_name] %>
-  <% else %>
   <label for="name">What is your name?</label>
   <input id="name" type="text" name="player_name" />
-  <% end %>
   <label for="chips">How many chips would you like to buy?</label>
   <input id="chips" type="text" name="chip_count" />
   <br />
